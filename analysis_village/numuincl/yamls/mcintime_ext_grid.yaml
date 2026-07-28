@@ -1,0 +1,30 @@
+# Intime-cosmic MC EXTENSION: remaining 141,903 files of the 206,903-file def
+# (first 65,000 already produced in dfs/mcintime/ — this list is disjoint:
+# tail -n +65001 of mc_intime.list). Combined exposure = sum of both.
+
+input_dir: /exp/sbnd/data/users/liangliu/cc-inclusive/lists
+output_dir: /exp/sbnd/data/users/liangliu/cc-inclusive/dfs   # ignored in grid mode
+
+jobs:
+  - name: mcintimeext
+    enabled: true
+    description: intime-cosmic MC remainder (142k files, completes the definition)
+    base_config: analysis_village.numuincl.configs.base
+    dfs:
+      - makedf.makedf.make_hdrdf
+      - analysis_village.numuincl.makedf1muX.make_pandora_evtdf_processed
+      - analysis_village.numuincl.makedf1muX.make_custom_trkdf
+    names: [hdr, evt_pand, trk]
+    input_list: mc_intime_ext.list
+    output: mcintime_ext
+    settings:
+      INCLUDE_WEIGHTS: false
+      SLIM: false
+      UPDATE_RECOMB: true
+      VERBOSE: false
+      ADD_STAT_UNC: false
+    args:
+      ngrid: 1420
+      ncpu: 7
+      nfile: -1
+      memory: 4
