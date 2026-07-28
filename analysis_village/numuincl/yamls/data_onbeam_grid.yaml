@@ -1,0 +1,31 @@
+# On-beam data (FixedDev + RollingDev bnblight, 2,356 files, ~5.95e18 POT).
+# dfs/settings follow Brinden's data.yaml: no mcnu, UPDATE_RECOMB=false.
+# ngrid: 0 until Phase-1 calibration sets files/job; nfile: 5 for the local
+# calibration run — flip to nfile: -1 + ngrid: N for the campaign.
+
+input_dir: /exp/sbnd/data/users/liangliu/cc-inclusive/lists
+output_dir: /exp/sbnd/data/users/liangliu/cc-inclusive/dfs   # ignored in grid mode
+
+jobs:
+  - name: dataonbeam
+    enabled: true
+    description: on-beam data full-chain (FixedDev+RollingDev), no mcnu, no recomb update
+    base_config: analysis_village.numuincl.configs.base
+    dfs:
+      - makedf.makedf.make_hdrdf
+      - analysis_village.numuincl.makedf1muX.make_pandora_evtdf_processed
+      - analysis_village.numuincl.makedf1muX.make_custom_trkdf
+    names: [hdr, evt_pand, trk]
+    input_list: data_onbeam.list
+    output: data_onbeam
+    settings:
+      INCLUDE_WEIGHTS: false
+      SLIM: false
+      UPDATE_RECOMB: false
+      VERBOSE: false
+      ADD_STAT_UNC: false
+    args:
+      ngrid: 40     # 59 files/job, ~25 min at the calibrated ~160 s/file worst case
+      ncpu: 7       # ignored on grid (hardcoded -ncpu 7)
+      nfile: -1
+      memory: 4

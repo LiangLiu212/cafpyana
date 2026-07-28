@@ -1,0 +1,24 @@
+input_dir: /exp/sbnd/data/users/liangliu/cc-inclusive/lists
+output_dir: /exp/sbnd/data/users/liangliu/cc-inclusive/dfs
+
+jobs:
+  - name: mcbnb_vtx500
+    enabled: true
+    description: 500-file truth-only run (hdr+mcnu) for neutrino vertex x/y/z validation plots
+    base_config: analysis_village.numuincl.configs.base
+    dfs:
+      - makedf.makedf.make_hdrdf
+      - makedf.makedf.make_mcnudf
+    names: [hdr, mcnu]
+    input_list: mcbnb_cv_vtx500.list
+    output: mcbnb_cv_vtx500
+    settings:
+      INCLUDE_WEIGHTS: false
+      SLIM: false
+      UPDATE_RECOMB: true
+      VERBOSE: true
+      ADD_STAT_UNC: false
+    args:
+      ngrid: 0
+      ncpu: -1
+      nfile: -1

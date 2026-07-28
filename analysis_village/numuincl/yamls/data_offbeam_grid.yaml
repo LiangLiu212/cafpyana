@@ -1,0 +1,30 @@
+# Off-beam data (Intime offbeamlight, 35,176 files, 1.72e7 gates).
+# dfs/settings follow Brinden's dataoffbeam.yaml: no mcnu, UPDATE_RECOMB=false.
+# ngrid: 0 until Phase-1 calibration; nfile: 5 for the local calibration run.
+
+input_dir: /exp/sbnd/data/users/liangliu/cc-inclusive/lists
+output_dir: /exp/sbnd/data/users/liangliu/cc-inclusive/dfs   # ignored in grid mode
+
+jobs:
+  - name: dataoffbeam
+    enabled: true
+    description: off-beam data full-chain (cosmic component of the prediction)
+    base_config: analysis_village.numuincl.configs.base
+    dfs:
+      - makedf.makedf.make_hdrdf
+      - analysis_village.numuincl.makedf1muX.make_pandora_evtdf_processed
+      - analysis_village.numuincl.makedf1muX.make_custom_trkdf
+    names: [hdr, evt_pand, trk]
+    input_list: data_offbeam.list
+    output: data_offbeam
+    settings:
+      INCLUDE_WEIGHTS: false
+      SLIM: false
+      UPDATE_RECOMB: false
+      VERBOSE: false
+      ADD_STAT_UNC: false
+    args:
+      ngrid: 300    # ~117 files/job, ~15 min at the calibrated ~34 s/file
+      ncpu: 7       # ignored on grid
+      nfile: -1
+      memory: 4
