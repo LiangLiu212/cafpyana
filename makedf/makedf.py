@@ -147,6 +147,22 @@ def make_sbndcrttrackdf(f):
 def make_sbndcrttrackptsdf(f):
     return loadbranches(f["recTree"], sbndcrttrackptsbranches).rec.sbnd_crt_tracks.points
 
+# Full-sample productions: the CRT readout spans +-30 ms (data) and stores
+# ~600 tracks/event, ~600x more than the in-gate physics needs. Keep a
+# +-200 us window around the trigger (gate +- generous sidebands for
+# accidental-rate studies).
+CRT_TRACK_TIME_WIN_NS = 200000.0
+
+def make_sbndcrttrackdf_gatewin(f):
+    df = loadbranches(f["recTree"], sbndcrttrackbranches).rec.sbnd_crt_tracks
+    return df[np.abs(df.time) < CRT_TRACK_TIME_WIN_NS]
+
+def make_sbndcrttrackptsdf_gatewin(f):
+    scal = loadbranches(f["recTree"], ["rec.sbnd_crt_tracks.time"]).rec.sbnd_crt_tracks
+    pts = loadbranches(f["recTree"], sbndcrttrackptsbranches).rec.sbnd_crt_tracks.points
+    keep = scal[np.abs(scal.time) < CRT_TRACK_TIME_WIN_NS].index
+    return pts[pts.index.droplevel(-1).isin(keep)]
+
 def make_histpotdf(f):
     # get the value from the TotalPOT histogram
     pot = f['TotalPOT'].values()

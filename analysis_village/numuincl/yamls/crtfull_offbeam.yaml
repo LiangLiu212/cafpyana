@@ -1,0 +1,35 @@
+# FULL off-beam data with CRT for the cosmic center calibration
+# (all 35,176 files of data_offbeam.list; ~1.65M recorded events).
+# Same chain as crtpilot_offbeam but with the +-200 us gate-windowed CRT
+# makers (full readout would be ~190 GB of out-of-gate tracks) and no crtsp.
+# Grid: 300 jobs x ~117 files (~1 h/job at the calibrated ~30 s/file).
+
+input_dir: /exp/sbnd/data/users/liangliu/cc-inclusive/lists
+output_dir: /exp/sbnd/data/users/liangliu/cc-inclusive/dfs   # ignored in grid mode
+
+jobs:
+  - name: crtfull_offbeam
+    enabled: true
+    description: full off-beam data CRT production (golden-cosmic calibration)
+    base_config: analysis_village.numuincl.configs.base
+    dfs:
+      - makedf.makedf.make_hdrdf
+      - analysis_village.numuincl.makedf1muX.make_pandora_evtdf_processed
+      - analysis_village.numuincl.makedf1muX.make_custom_trkdf
+      - makedf.makedf.make_sbndcrttrackdf_gatewin
+      - makedf.makedf.make_sbndcrttrackptsdf_gatewin
+      - makedf.makedf.make_opflashdf
+    names: [hdr, evt_pand, trk, crttrk, crttrkpts, opflash]
+    input_list: data_offbeam.list
+    output: crtfull_offbeam
+    settings:
+      INCLUDE_WEIGHTS: false
+      SLIM: false
+      UPDATE_RECOMB: false
+      VERBOSE: false
+      ADD_STAT_UNC: false
+    args:
+      ngrid: 300
+      ncpu: 7       # ignored on grid (hardcoded -ncpu 7)
+      nfile: -1
+      memory: 4
