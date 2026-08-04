@@ -141,6 +141,12 @@ def make_opflashdf(f):
     opflashdf = loadbranches(f["recTree"], opflashbranches).rec.opflashes
     return opflashdf
 
+def make_sbndcrttrackdf(f):
+    return loadbranches(f["recTree"], sbndcrttrackbranches).rec.sbnd_crt_tracks
+
+def make_sbndcrttrackptsdf(f):
+    return loadbranches(f["recTree"], sbndcrttrackptsbranches).rec.sbnd_crt_tracks.points
+
 def make_histpotdf(f):
     # get the value from the TotalPOT histogram
     pot = f['TotalPOT'].values()

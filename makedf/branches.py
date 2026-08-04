@@ -34,7 +34,17 @@ hdrbranches = [
 opflashbranches = [
     "rec.opflashes.firsttime",
     "rec.opflashes.time",
+    "rec.opflashes.timewidth",
     "rec.opflashes.totalpe",
+    "rec.opflashes.center.x",
+    "rec.opflashes.center.y",
+    "rec.opflashes.center.z",
+    "rec.opflashes.width.x",
+    "rec.opflashes.width.y",
+    "rec.opflashes.width.z",
+    "rec.opflashes.tpc",
+    "rec.opflashes.peperwall.0",
+    "rec.opflashes.peperwall.1",
 ]
 
 numipotbranches = [
@@ -79,6 +89,21 @@ crtspbranches = [
     "rec.crt_spacepoints.position_err.z",
     "rec.crt_spacepoints.time",
     "rec.crt_spacepoints.time_err"
+]
+
+# SBND-native CRT tracks (2-plane lines). Scalars and the points vector have
+# different CAF vector depth, so they load as two separate dfs.
+sbndcrttrackbranches = [
+    "rec.sbnd_crt_tracks.pe",
+    "rec.sbnd_crt_tracks.time",
+    "rec.sbnd_crt_tracks.time_err",
+    "rec.sbnd_crt_tracks.tof",
+]
+
+sbndcrttrackptsbranches = [
+    "rec.sbnd_crt_tracks.points.x",
+    "rec.sbnd_crt_tracks.points.y",
+    "rec.sbnd_crt_tracks.points.z",
 ]
 
 
@@ -128,6 +153,17 @@ trkbranches = [
     trkbranch + "crthit.distance",
     trkbranch + "crthit.hit.time",
     trkbranch + "crthit.hit.pe",
+    trkbranch + "crtspacepoint.score",
+    trkbranch + "crtspacepoint.spacepoint.time",
+    trkbranch + "crtspacepoint.spacepoint.pe",
+    trkbranch + "crtspacepoint.spacepoint.position.x",
+    trkbranch + "crtspacepoint.spacepoint.position.y",
+    trkbranch + "crtspacepoint.spacepoint.position.z",
+    trkbranch + "crtsbndtrack.score",
+    trkbranch + "crtsbndtrack.track.time",
+    trkbranch + "crtsbndtrack.track.time_err",
+    trkbranch + "crtsbndtrack.track.tof",
+    trkbranch + "crtsbndtrack.track.pe",
     trkbranch + "chi2pid.2.pid_ndof",
     trkbranch + "chi2pid.2.chi2_muon",
     trkbranch + "chi2pid.2.chi2_proton",
