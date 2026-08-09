@@ -510,11 +510,16 @@ def make_pandora_evtdf_processed(f, include_weights=None, wgt_types=["bnb","geni
     #slc.cut_cosmic_nuscore(cut=False,nu_score=0.5)
     #slc.cut_cosmic_isclear(cut=False,use_isclearcosmic=False)
     #Barycenter FM cuts
-    #Prescale flash PE
-    if ismc:
-        pe_col = slc.get_key([f'slc.barycenterFM.flashPEs'])[0]
-        slc.data.loc[:,pe_col] = slc.data.loc[:,pe_col]*0.66 #prescale to match the data
-    #Add cuts
+    #Flash PE: flashPEs stays unscaled (gen2 MC light matches data); the gen1
+    #x0.66 MC prescale is carried in a separate flashpe_scale column instead
+    #(data gets an identity copy so data/MC schemas stay aligned)
+    pe_col = slc.get_key([f'slc.barycenterFM.flashPEs'])[0]
+    if isinstance(pe_col, tuple):
+        scale_col = tuple('flashpe_scale' if v == 'flashPEs' else v for v in pe_col)
+    else:
+        scale_col = 'slc.barycenterFM.flashpe_scale'
+    slc.data.loc[:,scale_col] = slc.data.loc[:,pe_col]*(0.66 if ismc else 1.)
+    #Add cuts (cut.flashpe is computed on the unscaled flashPEs)
     slc.cut_flashpe(cut=False,min_flashpe=2000,prescale=1.)
     slc.cut_cosmic(cut=False,fmatch_score=0.06,use_opt0='barycenterFM',use_isclearcosmic=False)
     slc.cut_flashmatch(cut=False,method='barycenterFM')
