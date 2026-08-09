@@ -1,0 +1,32 @@
+# Recovery of 4 dead gen2-CV grid jobs (cluster 29180770 indices
+# 354,2937,5092,6063): their exact round-robin lines ((NR-1)%7500==k) from the
+# FROZEN gen2_mcbnb_cv.list, run locally as one job. Output moved into
+# dfs/gen2_cv/ afterwards. Same dfs chain/settings as gen2_mcbnb_grid.yaml.
+
+input_dir: /exp/sbnd/data/users/liangliu/cc-inclusive/lists
+output_dir: /exp/sbnd/data/users/liangliu/cc-inclusive/dfs
+
+jobs:
+  - name: gen2cvrec
+    enabled: true
+    description: local recovery of 4 straggler gen2 CV grid jobs
+    base_config: analysis_village.numuincl.configs.base
+    dfs:
+      - makedf.makedf.make_hdrdf
+      - makedf.makedf.make_mcnudf
+      - analysis_village.numuincl.makedf1muX.make_pandora_evtdf_processed
+      - analysis_village.numuincl.makedf1muX.make_custom_trkdf
+    names: [hdr, mcnu, evt_pand, trk]
+    input_list: gen2_cv_recover.list
+    output: gen2_cv_recover
+    settings:
+      INCLUDE_WEIGHTS: false
+      SLIM: false
+      UPDATE_RECOMB: true
+      VERBOSE: false
+      ADD_STAT_UNC: false
+    args:
+      ngrid: 0
+      ncpu: -1
+      nfile: -1
+      memory: 4
