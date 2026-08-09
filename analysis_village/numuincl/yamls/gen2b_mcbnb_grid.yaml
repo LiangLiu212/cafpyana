@@ -1,0 +1,33 @@
+# GEN2B: CV MC re-production on feature/gen2-cc-inclusive (Brinden's last
+# selection code, flashPEs UNSCALED + flashpe_scale column, commit 1d5a71e).
+# Same FROZEN input list as the gen2 campaign (749,262 files, same round-robin)
+# so ΣPOT must reproduce 5.4018e20 exactly — a closure gate.
+# PILOT NOW: ngrid 0, nfile 5. Campaign: nfile -1, ngrid 7500 (~100 files/job).
+
+input_dir: /exp/sbnd/data/users/liangliu/cc-inclusive/lists
+output_dir: /exp/sbnd/data/users/liangliu/cc-inclusive/dfs   # ignored in grid mode
+
+jobs:
+  - name: gen2bmcbnb
+    enabled: true
+    description: gen2 BNB CV x5 with unscaled flashPEs (Brinden-last selection flags)
+    base_config: analysis_village.numuincl.configs.base
+    dfs:
+      - makedf.makedf.make_hdrdf
+      - makedf.makedf.make_mcnudf
+      - analysis_village.numuincl.makedf1muX.make_pandora_evtdf_processed
+      - analysis_village.numuincl.makedf1muX.make_custom_trkdf
+    names: [hdr, mcnu, evt_pand, trk]
+    input_list: gen2_mcbnb_cv.list
+    output: gen2b_cv
+    settings:
+      INCLUDE_WEIGHTS: false
+      SLIM: false
+      UPDATE_RECOMB: true
+      VERBOSE: false
+      ADD_STAT_UNC: false
+    args:
+      ngrid: 7500   # ~100 files/job (pilot 2026-08-09 PASSED: scale col 0.66, raw cut.flashpe, cut.all Δ=0)
+      ncpu: 7       # ignored on grid (hardcoded -ncpu 7)
+      nfile: -1
+      memory: 4
