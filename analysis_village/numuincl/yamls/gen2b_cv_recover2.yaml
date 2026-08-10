@@ -1,0 +1,34 @@
+# GRID recovery of 878 dead gen2b-CV jobs (cluster 29552066: slot-starvation
+# preemption casualties in 98 contiguous blocks, plus the repeat-offender slow
+# slices 354/2937/5092). Input = exact union of the missing round-robin slices
+# of the FROZEN gen2_mcbnb_cv.list (87,800 files). After submission the whole
+# cluster gets JOB_EXPECTED_MAX_LIFETIME=14400 via condor_qedit so slow slices
+# survive first try. Outputs land beside the main harvest in dfs/gen2b_cv/.
+
+input_dir: /exp/sbnd/data/users/liangliu/cc-inclusive/lists
+output_dir: /exp/sbnd/data/users/liangliu/cc-inclusive/dfs   # ignored in grid mode
+
+jobs:
+  - name: gen2bcvrec2
+    enabled: true
+    description: grid recovery of 878 gen2b CV straggler jobs
+    base_config: analysis_village.numuincl.configs.base
+    dfs:
+      - makedf.makedf.make_hdrdf
+      - makedf.makedf.make_mcnudf
+      - analysis_village.numuincl.makedf1muX.make_pandora_evtdf_processed
+      - analysis_village.numuincl.makedf1muX.make_custom_trkdf
+    names: [hdr, mcnu, evt_pand, trk]
+    input_list: gen2b_cv_recover2.list
+    output: gen2b_cv_rec2
+    settings:
+      INCLUDE_WEIGHTS: false
+      SLIM: false
+      UPDATE_RECOMB: true
+      VERBOSE: false
+      ADD_STAT_UNC: false
+    args:
+      ngrid: 0
+      ncpu: -1
+      nfile: -1
+      memory: 4
