@@ -1,0 +1,38 @@
+# gen1-barycenter: Gen1 BNB CV re-production carrying the FULL barycenterFM
+# record (29 branches; in this production era 20 are filled — flashAsymmetry,
+# flashFirstHit, chargeCenterXLocal, deltaT, overlapY/Z, deltaY/Z_Trigger and
+# flashWidth.x are all-NaN in the CAFs; pilot-verified 2026-08-12).
+# Same frozen 374,055-file list as mcbnb_full. Closure gates at harvest: ΣPOT
+# must reproduce mcbnb_full exactly, and all flags except cut.flashpe/cut.all
+# must match — this branch stores RAW flashPEs + flashpe_scale (gen2b-style),
+# while mcbnb_full stored MC flashPEs x0.66 in place, so the flashpe stage
+# differs by convention (x0.66 recoverable bit-exact from flashpe_scale).
+# Pilot: ngrid 0, nfile 4. Campaign: nfile -1, ngrid 3750 (~100 files/job).
+
+input_dir: /exp/sbnd/data/users/liangliu/cc-inclusive/lists
+output_dir: /exp/sbnd/data/users/liangliu/cc-inclusive/dfs   # ignored in grid mode
+
+jobs:
+  - name: gen1barycenter
+    enabled: true
+    description: Gen1 BNB CV with full barycenterFM record (flashAsymmetry, centers, widths, deltas)
+    base_config: analysis_village.numuincl.configs.base
+    dfs:
+      - makedf.makedf.make_hdrdf
+      - makedf.makedf.make_mcnudf
+      - analysis_village.numuincl.makedf1muX.make_pandora_evtdf_processed
+      - analysis_village.numuincl.makedf1muX.make_custom_trkdf
+    names: [hdr, mcnu, evt_pand, trk]
+    input_list: mcbnb_cv_full.list
+    output: gen1-barycenter
+    settings:
+      INCLUDE_WEIGHTS: false
+      SLIM: false
+      UPDATE_RECOMB: true
+      VERBOSE: false
+      ADD_STAT_UNC: false
+    args:
+      ngrid: 3750  # ~100 files/job
+      ncpu: 7      # ignored on grid (hardcoded -ncpu 7)
+      nfile: -1
+      memory: 4
